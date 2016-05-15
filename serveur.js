@@ -22,11 +22,11 @@ app.set('view engine', 'ejs');
 
 /* --------------------
 connexion bd
----------------------
+--------------------- */
 var mysql = require('mysql');
 var connection = mysql.createConnection({host:'localhost', user:'zippo', password:'7894561230lr', database:'restaurant'});
 //Connexion BD
-connection.connect();*/
+connection.connect();
 
 
 /* ------------------
