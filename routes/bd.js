@@ -189,9 +189,11 @@ function getSpecialites(connection, res) {
     if(error) {
       throw error;
       res.render('pages/specialites', {message_inf: "<strong>Erreur lors de la récupération des spécialités</strong> : "+error.message});
-    } else if(rows.length){
+    } else if(rows.length != 0){
       tabJson = JSON.stringify(rows);
       res.render('pages/specialites', {tabJson: tabJson});
+    } else {//Rien a afficher
+      res.render('pages/specialites', {message_inf: "Auncun plat à afficher..."});
     }
   });
 };
