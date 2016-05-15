@@ -109,7 +109,7 @@ app.use(function(req, res, next) {
 /* -------------------
 Démarrage du serveur
 ------------------- */
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 8080;
 app.listen(port);
 console.log("\n*** Démarrage du serveur web sur le port "+port+" ***\n");
 /*app.listen(app.get('port'), function() {
