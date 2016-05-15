@@ -86,14 +86,14 @@ app.post('/reserver', function(req,res) {
   if(tabReq != null) {
     bd.insereResa(connection, tabReq, res);
   }
-});/*
+});
 app.post('/administrer', function(req, res) {
   var infos = index.formulaireConn(req, res);
   if(infos[0]) {
     //On vérifie la validité du pseudo, si admin on envoie la page sinon une erreur
     bd.estAdmin(connection, infos, res);
   }
-});
+});/*
 app.post('/ajouter-plat', function(req, res) {
   var tabReq = index.formulaireAjout(req, res);
   if(tabReq != null)
