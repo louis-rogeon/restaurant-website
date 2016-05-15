@@ -74,7 +74,7 @@ app.get('/administrer', function(req, res) {
   } else {
     res.render('pages/connexion.ejs');
   }
-});/*
+});
 app.post('/inscription', function(req,res) {
   var tabReq = index.formulaireInscr(req, res);
   if(tabReq != null) {
@@ -86,7 +86,7 @@ app.post('/reserver', function(req,res) {
   if(tabReq != null) {
     bd.insereResa(connection, tabReq, res);
   }
-});
+});/*
 app.post('/administrer', function(req, res) {
   var infos = index.formulaireConn(req, res);
   if(infos[0]) {
