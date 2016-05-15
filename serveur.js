@@ -90,7 +90,7 @@ app.use(function(req, res, next) {
 Démarrage du serveur
 ------------------- */
 app.listen(process.env.PORT || 8080, '127.0.0.1');
-console.log("\n*** Démarrage du serveur web ***\n");
+console.log("\n*** Démarrage du serveur web sur le port "+process.env.PORT+" ***\n");
 /*app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });*/
