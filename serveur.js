@@ -93,12 +93,12 @@ app.post('/administrer', function(req, res) {
     //On vérifie la validité du pseudo, si admin on envoie la page sinon une erreur
     bd.estAdmin(connection, infos, res);
   }
-});/*
+});
 app.post('/ajouter-plat', function(req, res) {
   var tabReq = index.formulaireAjout(req, res);
   if(tabReq != null)
     bd.ajoutPlat(connection, tabReq, res);
-});*/
+});
 //Gestion erreurs 404
 app.use(function(req, res, next) {
   res.render('pages/erreur404');
