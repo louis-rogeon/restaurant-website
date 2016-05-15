@@ -28,9 +28,9 @@ var mysql = require('mysql');
 //Connexion BD
 connection.connect();*/
 var connection = mysql.createConnection({
-  host     : process.env.DATABASE_URL,
-  user     : 'zippo',
-  password : 'introuvable ce mdp',
+  host     : 'us-cdbr-iron-east-04.cleardb.net',
+  user     : 'bb86fab629dfe0',
+  password : 'a2f1c1f2',
   database : 'heroku_42fbd727a2dbadc'
 });
 //Connexion BD
