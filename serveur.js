@@ -28,10 +28,11 @@ var mysql = require('mysql');
 //Connexion BD
 connection.connect();*/
 var connection = mysql.createConnection({
-  host     : 'us-cdbr-iron-east-04.cleardb.net',
-  user     : 'bb86fab629dfe0',
-  password : 'a2f1c1f2',
-  database : 'heroku_42fbd727a2dbadc'
+  host: mysqlCreds.hostname,  // not host
+  port: mysqlCreds.port,
+  user: mysqlCreds.username,  // not user
+  password: mysqlCreds.password,
+  database: mysqlCreds.name,
 });
 //Connexion BD
 connection.connect();
