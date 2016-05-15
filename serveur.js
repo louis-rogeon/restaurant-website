@@ -22,11 +22,11 @@ app.set('view engine', 'ejs');
 
 /* --------------------
 connexion bd
---------------------- */
+---------------------
 var mysql = require('mysql');
 var connection = mysql.createConnection({host:'localhost', user:'zippo', password:'7894561230lr', database:'restaurant'});
 //Connexion BD
-connection.connect();
+connection.connect();*/
 
 
 /* ------------------
@@ -91,3 +91,6 @@ Démarrage du serveur
 ------------------- */
 app.listen(process.env.PORT || 8080, '127.0.0.1');
 console.log("\n*** Démarrage du serveur web ***\n");
+/*app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});*/
