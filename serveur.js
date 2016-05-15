@@ -27,7 +27,10 @@ var mysql = require('mysql');
 /*var connection = mysql.createConnection({host:'localhost', user:'zippo', password:'7894561230lr', database:'restaurant'});
 //Connexion BD
 connection.connect();*/
-var connection = mysql.createConnection(process.env.DATABASE_URL);
+var connection = mysql.createConnection({
+  host     : process.env.DATABASE_URL,
+  database : 'heroku_42fbd727a2dbadc'
+});
 //Connexion BD
 connection.connect();
 
