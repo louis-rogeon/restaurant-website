@@ -34,7 +34,12 @@ var connection = mysql.createConnection({
   database: 'heroku_42fbd727a2dbadc',
 });
 //Connexion BD
-//connection.connect();
+connection.connect(function(err) {
+  if(err) {
+    throw err;
+    console.log("fuking erreur : "+err);
+  }
+});
 
 
 /* ------------------
