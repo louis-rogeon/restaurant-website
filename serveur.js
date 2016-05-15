@@ -34,7 +34,7 @@ var connection = mysql.createConnection({
   database: 'heroku_42fbd727a2dbadc',
 });
 //Connexion BD
-connection.connect();
+//connection.connect();
 
 
 /* ------------------
