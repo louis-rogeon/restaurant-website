@@ -45,8 +45,16 @@ connection.connect(function(err) {
 Routage
 ------------------ */
 app.get('/', function(req, res) {
+  connection.query("SELECT * FROM client;", function(err, rows) {
+    if(err) {
+      throw err;
+      console.log("fuking erreur : "+err);
+    } else {
+      console.log("un client récupéré : "+rows[0].nom);
+    }
+  });
   res.render('pages/index');
-});
+});/*
 app.get('/specialites', function(req, res) {
   bd.getSpecialites(connection, res);
 });
@@ -90,7 +98,7 @@ app.post('/ajouter-plat', function(req, res) {
   var tabReq = index.formulaireAjout(req, res);
   if(tabReq != null)
     bd.ajoutPlat(connection, tabReq, res);
-});
+});*/
 //Gestion erreurs 404
 app.use(function(req, res, next) {
   res.render('pages/erreur404');
