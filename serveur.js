@@ -57,7 +57,7 @@ app.get('/', function(req, res) {
 });
 app.get('/specialites', function(req, res) {
   bd.getSpecialites(connection, res);
-});
+});/*
 app.get('/reserver', function(req, res) {
   res.render('pages/reservation');
 });
@@ -98,7 +98,7 @@ app.post('/ajouter-plat', function(req, res) {
   var tabReq = index.formulaireAjout(req, res);
   if(tabReq != null)
     bd.ajoutPlat(connection, tabReq, res);
-});
+});*/
 //Gestion erreurs 404
 app.use(function(req, res, next) {
   res.render('pages/erreur404');
@@ -109,7 +109,7 @@ app.use(function(req, res, next) {
 /* -------------------
 Démarrage du serveur
 ------------------- */
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 app.listen(port);
 console.log("\n*** Démarrage du serveur web sur le port "+port+" ***\n");
 /*app.listen(app.get('port'), function() {
