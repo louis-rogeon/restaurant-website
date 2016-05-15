@@ -28,11 +28,10 @@ var mysql = require('mysql');
 //Connexion BD
 connection.connect();*/
 var connection = mysql.createConnection({
-  host: mysqlCreds.hostname,  // not host
-  port: mysqlCreds.port,
-  user: mysqlCreds.username,  // not user
-  password: mysqlCreds.password,
-  database: mysqlCreds.name,
+  host: 'us-cdbr-iron-east-04.cleardb.net',
+  user: 'bb86fab629dfe0',
+  password: 'a2f1c1f2',
+  database: 'heroku_42fbd727a2dbadc',
 });
 //Connexion BD
 connection.connect();
@@ -98,8 +97,9 @@ app.use(function(req, res, next) {
 /* -------------------
 Démarrage du serveur
 ------------------- */
-app.listen(process.env.PORT || 5000);
-console.log("\n*** Démarrage du serveur web sur le port "+process.env.PORT+" ***\n");
+var port = process.env.PORT || 5000;
+app.listen(port);
+console.log("\n*** Démarrage du serveur web sur le port "+port+" ***\n");
 /*app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });*/
