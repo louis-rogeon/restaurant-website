@@ -50,6 +50,7 @@
             <tbody>
             <%var tab = eval('(' + resJson + ')');
             var i;
+            alert("long admins"+tab.length);
             for(i=0;i<tab.length;i++) {%>
               <tr><td><%=tab[i].prenom%></td>
               <td><%=tab[i].nom%></td>
@@ -81,7 +82,7 @@
             <tbody>
             <%var tabResas = eval('(' + resas + ')');
             var i;
-            for(i=0;i<tab.length;i++) {%>
+            for(i=0;i<tabResas.length;i++) {%>
               <tr><td><%=tabResas[i].id_Client%></td>
               <td><%=tabResas[i].nbr_Invites%></td>
               <td><%=tabResas[i].date_Resa%></td>
