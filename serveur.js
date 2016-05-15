@@ -45,14 +45,6 @@ connection.connect(function(err) {
 Routage
 ------------------ */
 app.get('/', function(req, res) {
-  /*connection.query("SELECT * FROM client;", function(err, rows) {
-    if(err) {
-      throw err;
-      console.log("fuking erreur : "+err);
-    } else {
-      console.log("un client récupéré : "+rows[0].nom);
-    }
-  });*/
   res.render('pages/index');
 });
 app.get('/specialites', function(req, res) {

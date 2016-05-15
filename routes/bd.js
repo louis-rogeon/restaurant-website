@@ -76,16 +76,33 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
   connection.commit();
 };
 
+function getReservations(connection, res, adminsTemp) {//adminsTemps objet json contenant les demandes d'admin si existantes, sinon null
+  connection.query("SELECT * FROM Reservation;", function(error, rows) {
+    if(error) {
+      throw error;
+      res.render('pages/administration', {resJson: adminsTemp});
+    } else if(rows.length!=0) {//Résas à afficher
+      var reservations = JSON.stringify(rows);
+      res.render('pages/administration', {resJson: adminsTemp, resas: reservations});
+    } else {
+      res.render('pages/administration', {resJson: adminsTemp});
+    }
+  });
+};
+
 function getAdminTemp(connection, res) {
   connection.query("SELECT * FROM Admin_temp;", function(error , rows) {
     if(error) {
       throw error;
-      res.render('pages/administration');
+      var adminsTemp = null;
+      getReservations(connection, res, adminsTemp);
     } else if(rows.length!=0) {
-      var resJson = JSON.stringify(rows);
-      res.render('pages/administration', {resJson: resJson});//tabJSON: tabJSON});
+      var adminsTemp = JSON.stringify(rows);
+      getReservations(connection,res,adminsTemp);/*
+      */
     } else {
-      res.render('pages/administration');
+      var adminsTemp = null;
+      getReservations(connection, res, adminsTemp);
     }
   });
 };

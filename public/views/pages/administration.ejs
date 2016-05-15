@@ -63,9 +63,32 @@
       </div>
 
 
-      <div class="row" id="reservation">
+      <div class="row reservation" id="reservation">
         <h2>Réservations</h2>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        <% if(typeof resas != 'undefined') { %>
+        <table class="table table-bordered table-striped">
+          <caption>
+            <h4>Réservations en ligne</h4>
+          </caption>
+            <thead>
+              <tr>
+                <th>ID du client</th>
+                <th>Nombre de convives</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+            <%var tabResas = eval('(' + resas + ')');
+            var i;
+            for(i=0;i<tab.length;i++) {%>
+              <tr><td><%=tabResas[i].id_Client%></td>
+              <td><%=tabResas[i].nbr_Invites%></td>
+              <td><%=tabResas[i].date_Resa%></td>
+            <%}%>
+          </tbody>
+        </table>
+        <%}%>
       </div>
 
 
