@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <% include ../partials/head %>
+  </head>
+
+
+  <body>
+
+    <% include ../partials/header %>
+
+    <!-- Begin page content -->
+    <div class="container corps">
+      <div class="page-header row">
+        <h1>Administrer le site</h1>
+      </div>
+      <div class="row menu col-lg-12">
+        <ul class="col-lg-offset-1">
+          <li><a href="#validation"> Valider les demandes de compte administrateur</a></li>
+          <li><a href="#reservation"> Regardez les réservations à venir</a></li>
+          <li><a href="#plats"> Gérer les plats à l'affiche sur le site</a></li>
+        </ul>
+      </div>
+
+      <div class="row col-lg-12">
+        <%if(typeof message_conf != 'undefined') {%>
+          <p class="conf">
+            <%-message_conf%>
+          </p>
+        <%}%>
+      </div>
+
+      <div class="row" id="validation">
+        <h2>Gérer les demandes administrateur</h2>
+        <% if(typeof resJson != 'undefined') { %>
+        <table class="table table-bordered table-striped">
+          <caption>
+            <h4>Demandes de validation en cours</h4>
+          </caption>
+            <thead>
+              <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Valider</th>
+              </tr>
+            </thead>
+
+            <tbody>
+            <%var tab = eval('(' + resJson + ')');
+            var i;
+            for(i=0;i<tab.length;i++) {%>
+              <tr><td><%=tab[i].prenom%></td>
+              <td><%=tab[i].nom%></td>
+              <td><%=tab[i].pseudo%></td>
+              <td><%=tab[i].email%></td>
+              <td>oui / non</td></tr>
+            <%}%>
+          </tbody>
+        </table>
+        <%}%>
+      </div>
+
+
+      <div class="row" id="reservation">
+        <h2>Réservations</h2>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      </div>
+
+
+      <div class="row" id="plats">
+        <h2>Plats à l'affiche</h2>
+        <%if(typeof message_alert != 'undefined') {%>
+          <p class="alert">
+          <%-message_alert%>
+          </p>
+        <%}%>
+        <div>
+          <form class="col-lg-8" method="post" action="/ajouter-plat">
+            <legend>Ajouter un plat à la liste de vos spécialités</legend>
+            <div class="form-group">
+              <label for="nom">Nom du plat</label>
+              <input id="nom" name="nom" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="descr">Description</label>
+              <input id="descr" name="descr" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="urlIm">Ajoutez l'url de l'image du plat</label>
+              <input id="urlIm" name="urlIm" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="prix">Définissez un prix</label>
+              <input id="prix" name="prix" type="number" min="0" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="comm">Le commentaire du chef</label>
+              <input id="comm" name="comm" type="text" class="form-control">
+            </div>
+            <button type="submit"><span class="glyphicon glyphicon-ok-sign"></span> Ajouter</button>
+            <!--input type="submit" id="ajout_com" value="Réserver"-->
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <% include ../partials/footer %>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <% include ../partials/head %>
+  </head>
+
+
+  <body>
+
+    <% include ../partials/header %>
+
+    <!-- Begin page content -->
+    <div class="container test">
+      <div class="page-header row">
+        <h1>Découvrez nos spécialités</h1>
+      </div>
+
+      <div class="affPlats row">
+        <%if(typeof message_inf != 'undefined') {%>
+          <p class="alert">
+            <%=message_inf%>
+          </p><%
+        }else if(typeof tabJson != 'undefined'){
+          var tab = eval('(' + tabJson + ')');
+          var i;
+          for(i=0;i<tab.length;i++) {%>
+            <div class="panel panel-default col-lg-4 col-md-4 col-sm-6">
+              <div class="panel-heading">
+                <h3 class="panel-title"><%=tab[i].libelle%></h3>
+              </div>
+              <div class="panel-body"><%=tab[i].description%><br/><em><strong>Le mot du chef</strong> : &quot<%=tab[i].comm_chef%>&quot</em></div>
+              <div class="panel-footer"><%=tab[i].prix%> &#128</div>
+            </div>
+          <%}
+        } else {%> <p>Aucun plats à afficher.</p> <%}%>
+      </div>
+    </div>
+
+    <% include ../partials/footer %>
+
+  </body>
+</html>

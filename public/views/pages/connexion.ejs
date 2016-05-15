@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <% include ../partials/head %>
+  </head>
+
+
+  <body>
+
+    <% include ../partials/header %>
+
+    <!-- Begin page content -->
+    <div class="container test">
+      <div class="page-header row">
+        <h1>Se connecter</h1>
+      </div>
+      <%if(typeof message_alert != 'undefined') {%>
+        <p class="alert">
+        <%-message_alert%>
+        </p>
+      <%}%>
+      <div class="connexion container">
+        <div class="row">
+        <form class="col-lg-6" id="form-conn" method="post" action="/administrer">
+          <legend>Connecter-vous en tant qu'administrateur</legend>
+          <div class="form-group">
+              <label for="pseudo">Pseudo</label>
+              <input id="pseudo" name="pseudo" type="text" class="form-control" autofocus>
+          </div>
+          <div class="form-group">
+            <label for="mdp">Mot de passe</label>
+            <input id="mdp" name="mdp" type="password" class="form-control">
+          </div>
+          <button type="submit"><span class="glyphicon glyphicon-ok-sign"></span> Se connecter</button>
+            <!--input type="submit" id="ajout_com" value="Réserver"-->
+        </form>
+        </div>
+        <div class="row">
+        </br>
+          <form action="/inscription" class="col-lg-6">
+            <button type="submit"><span class="glyphicon glyphicon-plus-sign"></span> S'inscrire</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <% include ../partials/footer %>
+
+  </body>
+</html>
