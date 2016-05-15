@@ -37,7 +37,6 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if(err) {
     throw err;
-    console.log("fuking erreur : "+err);
   }
 });
 
@@ -47,7 +46,7 @@ Routage
 ------------------ */
 app.get('/', function(req, res) {
   res.render('pages/index');
-});/*
+});
 app.get('/specialites', function(req, res) {
   bd.getSpecialites(connection, res);
 });
