@@ -29,6 +29,8 @@ var mysql = require('mysql');
 connection.connect();*/
 var connection = mysql.createConnection({
   host     : process.env.DATABASE_URL,
+  user     : 'zippo',
+  password : 'introuvable ce mdp',
   database : 'heroku_42fbd727a2dbadc'
 });
 //Connexion BD
