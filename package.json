@@ -8,7 +8,7 @@
       "express": ">=4.0.1"
     , "serve-favicon": ">= 0.0.1"
     , "ejs": ">= 0.0.1"
-    , "mysql": ">= 3.8.6"
+    , "mysql": "2.10.2"
     , "socket.io": ">=0.0.1"
     , "body-parser": ">=0.0.1"
     , "cookie-parser": ">=0.0.1"
