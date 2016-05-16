@@ -47,7 +47,7 @@ var db_config = {
   user: 'bb86fab629dfe0',
   password: 'a2f1c1f2',
   database: 'heroku_42fbd727a2dbadc',
-});
+};
 function handleDisconnect() {
   connection = mysql.createConnection(db_config); // Recreate the connection, since
                                                   // the old one cannot be reused.
