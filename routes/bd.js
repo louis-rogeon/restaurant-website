@@ -218,9 +218,34 @@ function getSpecialites(connection, res) {
   });
 };
 
+function insereAdmin(connection, pseudo, res) {//pseudo de l'admin_temp
+  connection.query("SELECT * FROM Admin_temp WHERE pseudo=?", pseudo, function(err, rows) {
+    if(err) {
+      console.log("Erreur insertion de l'admin :"+err);
+      res.render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
+      throw err;
+    } else if(rows.length!=0) {//L'admintemp correspondant au pseudo existe bien
+      var req = "INSERT INTO Admin VALUES(null,?,?,?,?,?);";
+      connection.query(req, [rows[0].pseudo,rows[0].mdp,rows[0].prenom,rows[0].nom,rows[0].email], function(error, results) {
+        if(error) {
+          console.log("Erreur insertion de l'admin :"+error);
+          res.render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
+          throw error;
+        } else {
+          console.log("Admin inséré avec succès.");
+          res.render('pages/administration', {message_conf: "Administrateur ajouté avec succès.<br/>."});
+        }
+      });
+    } else {//mauvais pseudo
+      res.render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
+    }
+  });
+};
+
 
 exports.insereResa = insereResa;
 exports.estAdmin = estAdmin;
 exports.insereAdminTemp = insereAdminTemp;
 exports.ajoutPlat = ajoutPlat;
 exports.getSpecialites = getSpecialites;
+exports.insereAdmin = insereAdmin;

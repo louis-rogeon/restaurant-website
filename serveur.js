@@ -97,6 +97,9 @@ app.get('/administrer', function(req, res) {
     res.render('pages/connexion.ejs');
   }
 });
+app.get('/ajout-admin-:pseudo', function(req, res) {
+  bd.insereAdmin(connection, req.params.pseudo, res);
+});
 app.post('/inscription', function(req,res) {
   var tabReq = index.formulaireInscr(req, res);
   if(tabReq != null) {

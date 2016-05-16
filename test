@@ -1,0 +1,6 @@
+CREATE TRIGGER before_insert_admin BEFORE INSERT
+ON Admin FOR EACH ROW
+BEGIN
+ DELETE FROM Admin_temp WHERE pseudo=NEW.pseudo
+END
+;

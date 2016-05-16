@@ -28,6 +28,11 @@
             <%-message_conf%>
           </p>
         <%}%>
+        <%if(typeof message_alert != 'undefined') {%>
+          <p class="alert">
+          <%-message_alert%>
+          </p>
+        <%}%>
       </div>
 
       <div class="row admin" id="validation">
@@ -55,7 +60,7 @@
               <td><%=tab[i].nom%></td>
               <td><%=tab[i].pseudo%></td>
               <td><%=tab[i].email%></td>
-              <td>oui / non</td></tr>
+              <td><a href="/ajout-admin-<%=tab[i].pseudo%>">oui</a> / <a href="/supprimer-admintemp-<%=tab[i].pseudo%>">non</a></td></tr>
             <%}%>
           </tbody>
         </table>
@@ -93,11 +98,7 @@
 
       <div class="row admin" id="plats">
         <h2>Plats à l'affiche</h2>
-        <%if(typeof message_alert != 'undefined') {%>
-          <p class="alert">
-          <%-message_alert%>
-          </p>
-        <%}%>
+
         <div>
           <form class="col-lg-8" method="post" action="/ajouter-plat">
             <legend>Ajouter un plat à la liste de vos spécialités</legend>
