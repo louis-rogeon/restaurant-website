@@ -208,7 +208,7 @@ function getSpecialites(connection, res) {
   connection.query("SELECT * FROM Plat;", function(error, rows) {
     if(error) {
       res.render('pages/specialites', {message_inf: "<strong>Erreur lors de la récupération des spécialités</strong> : "+error.message});
-      throw error;
+      //throw error;
     } else if(rows.length != 0){
       tabJson = JSON.stringify(rows);
       res.render('pages/specialites', {tabJson: tabJson});

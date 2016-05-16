@@ -40,7 +40,7 @@ connection.connect(function(err) {
   }
 });
 connection.on('error', function(err) {
-  console.log(err.code); // 'ER_BAD_DB_ERROR'
+  console.log(err.code);
 });
 
 
@@ -96,10 +96,8 @@ app.post('/ajouter-plat', function(req, res) {
 });
 //Gestion erreurs 404
 app.use(function(req, res, next) {
-  connection.end();
   res.render('pages/erreur404');
   res.status(404);
-
 });
 
 
