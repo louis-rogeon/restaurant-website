@@ -73,13 +73,16 @@
       <div class="row reservation admin" id="reservation">
         <h2>Réservations</h2>
         <% if(typeof resas != 'undefined') { %>
+<!--resas = nom, email, telephone, nbr_Invites, jour, mois, annee, heure-->
         <table class="table table-bordered table-striped">
           <caption>
             <h4>Réservations en ligne</h4>
           </caption>
             <thead>
               <tr>
-                <th>ID du client</th>
+                <th>Nom du client</th>
+                <th>Email</th>
+                <th>Téléphone</th>
                 <th>Nombre de convives</th>
                 <th>Date</th>
                 <th>Heure</th>
@@ -89,9 +92,12 @@
             <tbody>
             <%var tabResas = eval('(' + resas + ')');
             for(i=0;i<tabResas.length;i++) {%>
-              <tr><td><%=tabResas[i].id_Client%></td>
+              <tr><td><%=tabResas[i].nom%></td>
+              <td><%=tabResas[i].email%></td>
+              <td><%=tabResas[i].telephone%></td>
               <td><%=tabResas[i].nbr_Invites%></td>
-              <td><%=tabResas[i].date_Resa%></td>
+              <td><%=tabResas[i].jour%>-<%=tabResas[i].mois%>-<%=tabResas[i].annee%></td>
+              <td><%=tabResas[i].heure%></td>
             <%}%>
           </tbody>
         </table>

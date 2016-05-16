@@ -80,13 +80,13 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
 };
 
 function getReservations(connection, res, adminsTemp) {//adminsTemps objet json contenant les demandes d'admin si existantes, sinon null
-  connection.query("SELECT * FROM Reservation;", function(error, rows) {
+  connection.query("SELECT nom, email, telephone, nbr_Invites, DAYOFMONTH(date_Resa) as jour, MONTH(date_Resa) as mois, YEAR(date_Resa) as annee, TIME(date_Resa) as heure FROM Reservation NATURAL JOIN Client ORDER BY annee, mois, jour;", function(error, rows) {
     if(error) {
       res.render('pages/administration', {resJson: adminsTemp});
       throw error;
     } else if(rows.length!=0) {//Résas à afficher
       var reservations = JSON.stringify(rows);
-      console.log(rows[0].date_Resa);
+      console.log(reservations);
       res.render('pages/administration', {resJson: adminsTemp, resas: reservations});
     } else {
       res.render('pages/administration', {resJson: adminsTemp});
