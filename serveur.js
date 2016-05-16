@@ -100,6 +100,9 @@ app.get('/administrer', function(req, res) {
 app.get('/ajout-admin-:pseudo', function(req, res) {
   bd.insereAdmin(connection, req.params.pseudo, res);
 });
+app.get('/supprimer-admintemp-:pseudo', function(req, res) {
+  bd.supprimeAdminTemp(connection, req.params.pseudo, res);
+});
 app.post('/inscription', function(req,res) {
   var tabReq = index.formulaireInscr(req, res);
   if(tabReq != null) {

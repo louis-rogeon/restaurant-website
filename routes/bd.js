@@ -86,6 +86,7 @@ function getReservations(connection, res, adminsTemp) {//adminsTemps objet json 
       throw error;
     } else if(rows.length!=0) {//Résas à afficher
       var reservations = JSON.stringify(rows);
+      console.log(rows[0].date_Resa);
       res.render('pages/administration', {resJson: adminsTemp, resas: reservations});
     } else {
       res.render('pages/administration', {resJson: adminsTemp});
@@ -222,22 +223,54 @@ function insereAdmin(connection, pseudo, res) {//pseudo de l'admin_temp
   connection.query("SELECT * FROM Admin_temp WHERE pseudo=?", pseudo, function(err, rows) {
     if(err) {
       console.log("Erreur insertion de l'admin :"+err);
-      res.render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
+      res.redirect('/administrer'); //render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
+      throw err;
+    } else if(rows.length!=0) {//L'admintemp correspondant au pseudo existe bien
+      connection.query("DELETE FROM Admin_temp WHERE pseudo='"+pseudo+"';", function(error, results) {
+        if(error) {
+          console.log("Erreur suppression de l'admin temporaire :"+error);
+          res.redirect('/administrer');//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
+          throw error;
+        } else { //Admin temporaire effacé
+          console.log("suppression de l'admin temporaire réussie.");
+          res.redirect('/administrer');
+        }
+      });
+    } else {//mauvais pseudo
+      res.redirect('administrer');//render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
+    }
+  });
+};
+
+function supprimeAdminTemp(connection, pseudo, res) {
+  connection.query("SELECT * FROM Admin_temp WHERE pseudo=?", pseudo, function(err, rows) {
+    if(err) {
+      console.log("Erreur suppression de l'admin temporaire :"+err);
+      res.redirect('/administrer'); //render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
       throw err;
     } else if(rows.length!=0) {//L'admintemp correspondant au pseudo existe bien
       var req = "INSERT INTO Admin VALUES(null,?,?,?,?,?);";
       connection.query(req, [rows[0].pseudo,rows[0].mdp,rows[0].prenom,rows[0].nom,rows[0].email], function(error, results) {
         if(error) {
-          console.log("Erreur insertion de l'admin :"+error);
-          res.render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
+          console.log("Erreur suppression de l'admin temporaire :"+error);
+          res.redirect('/administrer');//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
           throw error;
         } else {
-          console.log("Admin inséré avec succès.");
-          res.render('pages/administration', {message_conf: "Administrateur ajouté avec succès.<br/>."});
+          //On efface l'admin temporaire
+          connection.query("DELETE FROM Admin_temp WHERE pseudo=?", rows[0].pseudo, function(er, resu) {
+            if(er) {
+              console.log("Erreur suppression de l'admin temporaire :"+er);
+              res.redirect('/administrer');//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+er.message});
+              throw er;
+            } else {
+              console.log("Admin temporaire supprimé avec succès.");
+              res.redirect('/administrer');//render('pages/administration', {message_conf: "Administrateur ajouté avec succès.<br/>."});
+            }
+          });
         }
       });
     } else {//mauvais pseudo
-      res.render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
+      res.redirect('administrer');//render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
     }
   });
 };
@@ -249,3 +282,4 @@ exports.insereAdminTemp = insereAdminTemp;
 exports.ajoutPlat = ajoutPlat;
 exports.getSpecialites = getSpecialites;
 exports.insereAdmin = insereAdmin;
+exports.supprimeAdminTemp = supprimeAdminTemp;

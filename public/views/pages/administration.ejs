@@ -55,13 +55,15 @@
             <tbody>
             <%var tab = eval('(' + resJson + ')');
             var i;
+            if(tab != null) {
             for(i=0;i<tab.length;i++) {%>
               <tr><td><%=tab[i].prenom%></td>
               <td><%=tab[i].nom%></td>
               <td><%=tab[i].pseudo%></td>
               <td><%=tab[i].email%></td>
               <td><a href="/ajout-admin-<%=tab[i].pseudo%>">oui</a> / <a href="/supprimer-admintemp-<%=tab[i].pseudo%>">non</a></td></tr>
-            <%}%>
+            <%}
+          }%>
           </tbody>
         </table>
         <%}%>
@@ -80,6 +82,7 @@
                 <th>ID du client</th>
                 <th>Nombre de convives</th>
                 <th>Date</th>
+                <th>Heure</th>
               </tr>
             </thead>
 
