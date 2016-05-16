@@ -24,9 +24,6 @@ app.set('view engine', 'ejs');
 connexion bd
 --------------------- */
 var mysql = require('mysql');
-/*var connection = mysql.createConnection({host:'localhost', user:'zippo', password:'7894561230lr', database:'restaurant'});
-//Connexion BD
-connection.connect();*/
 var connection = mysql.createConnection({
   host: 'us-cdbr-iron-east-04.cleardb.net',
   user: 'bb86fab629dfe0',
@@ -37,7 +34,13 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if(err) {
     throw err;
+    console.log("erreur code : "+err.code);
+  } else {
+    console.log("Connexion à la BD réussie.");
   }
+});
+connection.on('error', function(err) {
+  console.log(err.code); // 'ER_BAD_DB_ERROR'
 });
 
 
@@ -93,8 +96,10 @@ app.post('/ajouter-plat', function(req, res) {
 });
 //Gestion erreurs 404
 app.use(function(req, res, next) {
+  connection.end();
   res.render('pages/erreur404');
   res.status(404);
+
 });
 
 

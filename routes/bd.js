@@ -6,10 +6,10 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
   //On verifie que le client n'existe pas déjà dans la bd
   connection.query("SELECT * FROM Client WHERE nom=? AND email=? AND telephone=?;", [tabReq[0],tabReq[1],tabReq[2]], function(error, rows) {
     if(error) {
-      throw error;
       console.log("Erreur lors de l'insertion du client.");
       var message = "-<strong>Erreur lors de l'ajout du client'</strong : "+error2.message+".</br>";
       res.render('pages/reservation', {message_alert: message});
+      throw error;
     }
     //Aucun client similaire retrouvé
     else if(rows.length == 0){
@@ -34,6 +34,7 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
               console.log("Erreur insertion réservation : "+error2);
               var message = "-<strong>Erreur lors de la réservation</strong : "+error2.message+".</br>";
               res.render('pages/reservation', {message_alert: message});
+              throw error2;
             }
           });
 
@@ -41,6 +42,7 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
           console.log("Erreur insertion client : "+error1);
           var message = "-<strong>Erreur lors de la réservation</strong : "+error1.message+".</br>";
           res.render('pages/reservation', {message_alert: message});
+          throw error1;
         }
       });
 
@@ -49,10 +51,10 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
     } else {
       connection.query("SELECT id_Client FROM Client WHERE nom=? AND email=? AND telephone=?;",[tabReq[0],tabReq[1],tabReq[2]], function(error, results) {
         if(error) {
-          throw error;
           console.log("Erreur insertion réservation : "+error);
           var message = "-<strong>Erreur lors de la réservation</strong : "+error.message+".</br>";
           res.render('pages/reservation', {message_alert: message});
+          throw error;
         } else {
           var idClient = results[0].id_Client;
           var datetime = tabReq[4]+" "+tabReq[5];
@@ -66,6 +68,7 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
               console.log("Erreur insertion réservation : "+error2);
               var message = "-<strong>Erreur lors de la réservation</strong : "+error2.message+".</br>";
               res.render('pages/reservation', {message_alert: message});
+              throw error2;
             }
           });
 
@@ -79,8 +82,8 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
 function getReservations(connection, res, adminsTemp) {//adminsTemps objet json contenant les demandes d'admin si existantes, sinon null
   connection.query("SELECT * FROM Reservation;", function(error, rows) {
     if(error) {
-      throw error;
       res.render('pages/administration', {resJson: adminsTemp});
+      throw error;
     } else if(rows.length!=0) {//Résas à afficher
       var reservations = JSON.stringify(rows);
       res.render('pages/administration', {resJson: adminsTemp, resas: reservations});
@@ -93,9 +96,9 @@ function getReservations(connection, res, adminsTemp) {//adminsTemps objet json 
 function getAdminTemp(connection, res) {
   connection.query("SELECT * FROM Admin_temp;", function(error , rows) {
     if(error) {
-      throw error;
       var adminsTemp = null;
       getReservations(connection, res, adminsTemp);
+      throw error;
     } else if(rows.length!=0) {
       var adminsTemp = JSON.stringify(rows);
       getReservations(connection,res,adminsTemp);/*
@@ -112,8 +115,8 @@ function estAdmin(connection, infos, res) { //infos = [valide,pseudo,mdp];
   bool = false
   connection.query(req, [infos[1],infos[2]], function(error, rows, next) {
     if(error) {
-      throw error;
       console.log("Erreur lors de la vérification du compte admin : "+error);
+      throw error;
     } else {
       if(rows.length != 0) {
         //connecté en admin, on prend les infos a afficher sur la page et on les renvoient
@@ -131,29 +134,29 @@ function insereAdminTemp(connection, tabReq, res) { //tabReq = [prenom,nom,pseud
   //On vérifie que le pseudo n'apparait pas deja dans la BALISES
   connection.query("SELECT * FROM Admin WHERE pseudo=?;", [tabReq[2]], function(error, rows) {
     if(error) {
-      throw error;
       console.log("Erreur insertion administrateur temporaire : "+erreur);
       var message = "-<strong>Erreur lors de la réservation</strong : "+erreur.message+".</br>";
       res.render('pages/inscription', {message_alert: message});
+      throw error;
     } else if(rows.length==0) { // pseudo non prsent dans Admin
 
 
       connection.query("SELECT * FROM Admin_temp WHERE pseudo=?;", [tabReq[2]], function(err, results) {
         if(err) {
-          throw err;
           console.log("Erreur insertion administrateur temporaire : "+erreur);
           var message = "-<strong>Erreur lors de la réservation</strong : "+erreur.message+".</br>";
           res.render('pages/inscription', {message_alert: message});
+          throw err;
         } else if(results.length==0) { // pseudo non présents dans Admin_temp;
           //On insere
 
           var req = "INSERT INTO Admin_temp VALUES(null,'"+tabReq[2]+"','"+tabReq[4]+"','"+tabReq[0]+"','"+tabReq[1]+"','"+tabReq[3]+"');";
           connection.query(req, function(erreur, lignes) {
             if(erreur) {
-              throw erreur;
               console.log("Erreur insertion administrateur temporaire : "+erreur);
               var message = "-<strong>Erreur lors de la réservation</strong : "+erreur.message+".</br>";
               res.render('pages/inscription', {message_alert: message});
+              throw erreur;
             } else {
               console.log("Insertion d'administrateur temporaire réussi.");
               res.render('pages/inscription-complete');
@@ -177,18 +180,18 @@ function insereAdminTemp(connection, tabReq, res) { //tabReq = [prenom,nom,pseud
 function ajoutPlat(connection, tabReq, res) {// tabReq = [libzllé,descr,urlIm,comm,prix];
   connection.query("SELECT * FROM Plat WHERE libelle=?;", [tabReq[0]], function(err, results) {
     if(err) {
-      throw err;
       console.log("Erreur insertion du plat : "+err);
       var msg = "<strong>Erreur lors de l'insertion du plat</strong> :"+err.message;
       res.render('pages/administration', {message_alert: msg});
+      throw err;
     } else if(results.length==0) {//Aucun plat du meme nom on insere
       var req = "INSERT INTO Plat VALUES(null,"+connection.escape(tabReq[0])+","+connection.escape(tabReq[1])+","+connection.escape(tabReq[2])+","+connection.escape(tabReq[3])+","+tabReq[4]+");";
       connection.query(req, function(error, rows) {
         if(error) {
           console.log("Erreur insertion du plat : "+error);
-          throw error;
           var msg = "<strong>Erreur lors de l'insertion du plat</strong> :"+error.message;
           res.render('pages/administration', {message_alert: msg});
+          throw error;
         } else {//Insertion réussie
           console.log("Insertion d'un nouveau plat réussie.");
           res.render('pages/administration', {message_conf: "Le plat a bien été ajouté ! Il apparaitra dorénavant sur la page <em>Spécialités</em du site."});
@@ -204,8 +207,8 @@ function ajoutPlat(connection, tabReq, res) {// tabReq = [libzllé,descr,urlIm,c
 function getSpecialites(connection, res) {
   connection.query("SELECT * FROM Plat;", function(error, rows) {
     if(error) {
-      throw error;
       res.render('pages/specialites', {message_inf: "<strong>Erreur lors de la récupération des spécialités</strong> : "+error.message});
+      throw error;
     } else if(rows.length != 0){
       tabJson = JSON.stringify(rows);
       res.render('pages/specialites', {tabJson: tabJson});
