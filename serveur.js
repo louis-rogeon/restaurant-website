@@ -9,6 +9,7 @@ var fs = require('fs'),
 //Serveur http pour les sockets
 //var http = require('http');
 //var server = http.createServer(app);
+var url = require("url");
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 app.use(bodyParser.urlencoded({extended: true }));
@@ -140,7 +141,14 @@ Démarrage du serveur
 var port = process.env.PORT || 3000;
 app.listen(port);
 console.log("\n*** Démarrage du serveur web sur le port "+port+" ***\n");
-console.log("BD url : "+process.env.DATABASE_URL);
+var bd = process.env.DATABASE_URL;
+console.log("BD url : "+bd);
+console.log("BD host : "+url.parse(bd).hostname);
+console.log("BD name : "+url.parse(bd).pathname);
+console.log("BD user:passwd : "+url.parse(bd).auth);
+var logsString = url.parse(bd).auth;
+var logsTab = logsString.split(':');
+console.logs("BD user/passwd : "+logsTab[0]+"/"+logsTab[1]);
 /*app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });*/
