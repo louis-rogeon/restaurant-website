@@ -140,6 +140,7 @@ Démarrage du serveur
 var port = process.env.PORT || 3000;
 app.listen(port);
 console.log("\n*** Démarrage du serveur web sur le port "+port+" ***\n");
+console.log("BD url : "+process.env.DATABASE_URL);
 /*app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });*/
