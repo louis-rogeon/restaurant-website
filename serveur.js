@@ -24,31 +24,22 @@ app.set('view engine', 'ejs');
 /* --------------------
 connexion bd
 --------------------- */
-var mysql = require('mysql');/*
-var connection = mysql.createConnection({
-  host: 'us-cdbr-iron-east-04.cleardb.net',
-  user: 'bb86fab629dfe0',
-  password: 'a2f1c1f2',
-  database: 'heroku_42fbd727a2dbadc',
-});*/
-//Connexion BD
-/*connection.connect(function(err) {
-  if(err) {
-    throw err;
-    console.log("erreur code : "+err.code);
-  } else {
-    console.log("Connexion à la BD réussie.");
-  }
-});
-connection.on('error', function(err) {
-  console.log(err.code);
-});*/
+var mysql = require('mysql');
+//On recupere les logs de la BD sur le serveur d'heroku
+var urlBD = process.env.DATABASE_URL;
+var hostBD = url.parse(bd).hostname;
+var logsTab = (url.parse(bd).auth).split(':');
+var userBD = logsTab[0];
+var passwdBD = logsTab[1];
+var nameBD = (url.parse(bd).pathname).substring(1);
+//Set up BD
 var db_config = {
-  host: 'us-cdbr-iron-east-04.cleardb.net',
-  user: 'bb86fab629dfe0',
-  password: 'a2f1c1f2',
-  database: 'heroku_42fbd727a2dbadc',
+  host: hostBD,//'us-cdbr-iron-east-04.cleardb.net',
+  user: userBD,//'bb86fab629dfe0',
+  password: passwdBD,//'a2f1c1f2',
+  database: nameBD//'heroku_42fbd727a2dbadc',
 };
+//fonction gérant les erreurs de connection et redemande une connexion si celle-ci est perdue
 function handleDisconnect() {
   connection = mysql.createConnection(db_config); // Recreate the connection, since
                                                   // the old one cannot be reused.
@@ -69,7 +60,6 @@ function handleDisconnect() {
     }
   });
 }
-
 handleDisconnect();
 
 /* ------------------
@@ -141,16 +131,3 @@ Démarrage du serveur
 var port = process.env.PORT || 3000;
 app.listen(port);
 console.log("\n*** Démarrage du serveur web sur le port "+port+" ***\n");
-var bd = process.env.DATABASE_URL;
-console.log("BD url : "+bd);
-console.log("BD host : "+url.parse(bd).hostname);
-nameBD = url.parse(bd).pathname;
-nameBD = nameBD.substring(1);
-console.log("BD name : "+ nameBD);
-console.log("BD user:passwd : "+url.parse(bd).auth);
-var logsString = url.parse(bd).auth;
-var logsTab = logsString.split(':');
-console.log("BD user/passwd : "+logsTab[0]+"/"+logsTab[1]);
-/*app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});*/
