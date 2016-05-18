@@ -38,7 +38,8 @@
       <div class="row admin" id="validation">
         <h2>Gérer les demandes administrateur</h2>
         <% if(typeof resJson != 'undefined') { %>
-        <table class="table table-bordered table-striped">
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-condensed">
           <caption>
             <h4>Demandes de validation en cours</h4>
           </caption>
@@ -66,6 +67,7 @@
           }%>
           </tbody>
         </table>
+        </div>
         <%}%>
       </div>
 
