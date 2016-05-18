@@ -148,7 +148,7 @@ console.log("BD name : "+url.parse(bd).pathname);
 console.log("BD user:passwd : "+url.parse(bd).auth);
 var logsString = url.parse(bd).auth;
 var logsTab = logsString.split(':');
-console.logs("BD user/passwd : "+logsTab[0]+"/"+logsTab[1]);
+console.log("BD user/passwd : "+logsTab[0]+"/"+logsTab[1]);
 /*app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });*/
