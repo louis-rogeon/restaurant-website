@@ -14,11 +14,24 @@
       <div class="page-header row">
         <h1>Réserver une table</h1>
       </div>
-      <%if(typeof message_alert != 'undefined') {%>
-        <p class="alert">
-        <%-message_alert%>
-        </p>
-      <%}%>
+      <div class="container alertBox col-lg-12">
+        <%if(typeof message_warning != 'undefined') {%>
+          <div class="row alert alert-warning">
+            <strong>Oups... Problème avec la base de donnée :</strong><br/>
+            <%-message_warning%>
+          </div>
+        <%}%>
+        <%if(typeof message_success != 'undefined') {%>
+          <div class="row alert alert-success">
+            <%-message_success%>
+          </div>
+        <%}%>
+        <%if(typeof message_info != 'undefined') {%>
+          <div class="row alert alert-info">
+            <%-message_info%>
+          </div>
+        <%}%>
+      </div>
       <div class="reservation row">
           <form class="col-lg-12" id="form-resa" method="post" action="/reserver">
             <legend>Complétez le formulaire pour réserver votre table</legend>

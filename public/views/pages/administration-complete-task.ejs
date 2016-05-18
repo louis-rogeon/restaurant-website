@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <% include ../partials/head %>
+  </head>
+
+
+  <body>
+
+    <% include ../partials/header %>
+
+    <!-- Begin page content -->
+    <div class="container corps">
+      <div class="page-header row">
+        <h1>Administrer le site</h1>
+      </div>
+
+      <div class="container alertBox col-lg-12">
+        <%if(typeof message_warning != 'undefined') {%>
+          <div class="row alert alert-warning">
+            <strong>Oups... Problème avec la base de donnée :</strong><br/>
+            <%-message_warning%>
+          </div>
+        <%}%>
+        <%if(typeof message_success != 'undefined') {%>
+          <div class="row alert alert-success">
+            <%-message_success%>
+          </div>
+        <%}%>
+        <%if(typeof message_info != 'undefined') {%>
+          <div class="row alert alert-info">
+            <%-message_info%>
+          </div>
+        <%}%>
+      </div>
+
+      <p>
+        <a class="btn btn-default" href="/administrer">Retour à la page d'administration</a> 
+      </p>
+
+
+    </div>
+
+    <% include ../partials/footer %>
+  </body>
+</html>

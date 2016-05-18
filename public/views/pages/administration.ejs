@@ -12,7 +12,7 @@
     <!-- Begin page content -->
     <div class="container corps">
       <div class="page-header row">
-        <h1>Administrer le site</h1>
+        <h1 id="hautdepage">Administrer le site</h1>
       </div>
       <div class="row menu col-lg-12">
         <ul class="col-lg-offset-1">
@@ -22,16 +22,22 @@
         </ul>
       </div>
 
-      <div class="row col-lg-12">
-        <%if(typeof message_conf != 'undefined') {%>
-          <p class="conf">
-            <%-message_conf%>
-          </p>
+      <div class="container alertBox col-lg-12">
+        <%if(typeof message_warning != 'undefined') {%>
+          <div class="row alert alert-warning">
+            <strong>Oups... Problème avec la base de donnée :</strong><br/>
+            <%-message_warning%>
+          </div>
         <%}%>
-        <%if(typeof message_alert != 'undefined') {%>
-          <p class="alert">
-          <%-message_alert%>
-          </p>
+        <%if(typeof message_success != 'undefined') {%>
+          <div class="row alert alert-success">
+            <%-message_success%>
+          </div>
+        <%}%>
+        <%if(typeof message_info != 'undefined') {%>
+          <div class="row alert alert-info">
+            <%-message_info%>
+          </div>
         <%}%>
       </div>
 
@@ -69,6 +75,7 @@
         </table>
         </div>
         <%}%>
+        <br/><a href="#hautdepage">Revenir au menu</a>
       </div>
 
 
@@ -106,14 +113,15 @@
         </table>
         </div>
         <%}%>
+        <br/><a href="#hautdepage">Revenir au menu</a>
       </div>
 
 
       <div class="row admin" id="plats">
-        <h2>Plats à l'affiche</h2>
+        <h2>Gérer les plats affichés</h2>
 
         <% if(typeof plats != 'undefined') { %>
-        <div class="table-responsive">
+        <div class="table-responsive row">
         <table class="table table-bordered table-striped table-condensed">
           <caption>
             <h4>Plats actuellement à l'affiche sur le site</h4>
@@ -145,7 +153,7 @@
         </div>
         <%}%>
 
-        <div>
+        <div class="row">
           <form class="col-lg-8" method="post" action="/ajouter-plat">
             <legend>Ajouter un plat à la liste de vos spécialités</legend>
             <div class="form-group">
@@ -171,6 +179,9 @@
             <button type="submit"><span class="glyphicon glyphicon-ok-sign"></span> Ajouter</button>
             <!--input type="submit" id="ajout_com" value="Réserver"-->
           </form>
+        </div>
+        <div class="row">
+          <br/><a href="#hautdepage">Revenir au menu</a>
         </div>
       </div>
 

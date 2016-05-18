@@ -7,8 +7,7 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
   connection.query("SELECT * FROM Client WHERE nom=? AND email=? AND telephone=?;", [tabReq[0],tabReq[1],tabReq[2]], function(error, rows) {
     if(error) {
       console.log("Erreur lors de l'insertion du client.");
-      var message = "-<strong>Erreur lors de l'ajout du client'</strong : "+error2.message+".</br>";
-      res.render('pages/reservation', {message_alert: message});
+      res.render('pages/reservation', {message_warning: error.message});
       throw error;
     }
     //Aucun client similaire retrouvé
@@ -29,19 +28,17 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
           connection.query(req, function(error2, rows) {
             if(error2==null) {
               console.log("Insertion de la réservation réussie.");
-              res.render('pages/reservation-complete');
+              res.render('pages/reservation', {message_success: "<strong>Votre réservation a bien été prise en compte.</strong><br/>Un email de confirmation sera envoyé, dans le cas contraire un appel vous sera passé de l'équipe du restaurant."});
             } else {
               console.log("Erreur insertion réservation : "+error2);
-              var message = "-<strong>Erreur lors de la réservation</strong : "+error2.message+".</br>";
-              res.render('pages/reservation', {message_alert: message});
+              res.render('pages/reservation', {message_warning: error2.message});
               throw error2;
             }
           });
 
         } else {
           console.log("Erreur insertion client : "+error1);
-          var message = "-<strong>Erreur lors de la réservation</strong : "+error1.message+".</br>";
-          res.render('pages/reservation', {message_alert: message});
+          res.render('pages/reservation', {message_warning: error1.message});
           throw error1;
         }
       });
@@ -52,8 +49,7 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
       connection.query("SELECT id_Client FROM Client WHERE nom=? AND email=? AND telephone=?;",[tabReq[0],tabReq[1],tabReq[2]], function(error, results) {
         if(error) {
           console.log("Erreur insertion réservation : "+error);
-          var message = "-<strong>Erreur lors de la réservation</strong : "+error.message+".</br>";
-          res.render('pages/reservation', {message_alert: message});
+          res.render('pages/reservation', {message_warning: error.message});
           throw error;
         } else {
           var idClient = results[0].id_Client;
@@ -63,11 +59,10 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
           connection.query(req, function(error2, rows) {
             if(error2==null) {
               console.log("Insertion de la réservation réussie.");
-              res.render('pages/reservation-complete');
+              res.render('pages/reservation', {message_success: "<strong>Votre réservation a bien été prise en compte.</strong><br/>Un email de confirmation sera envoyé, dans le cas contraire un appel vous sera passé de l'équipe du restaurant."});
             } else {
               console.log("Erreur insertion réservation : "+error2);
-              var message = "-<strong>Erreur lors de la réservation</strong : "+error2.message+".</br>";
-              res.render('pages/reservation', {message_alert: message});
+              res.render('pages/reservation', {message_warning: error2.message});
               throw error2;
             }
           });
@@ -76,7 +71,6 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
       });
     }
   });
-  connection.commit();
 };
 
 function getPlats(connection, res, adminsTemp, reservations) {//adminsTemps contient demandes de validation admin, reservations a les reservations en cours
@@ -132,6 +126,7 @@ function estAdmin(connection, infos, res) { //infos = [valide,pseudo,mdp];
   connection.query(req, [infos[1],infos[2]], function(error, rows, next) {
     if(error) {
       console.log("Erreur lors de la vérification du compte admin : "+error);
+      res.render('pages/connexion', {message_warning: error.message});
       throw error;
     } else {
       if(rows.length != 0) {
@@ -140,7 +135,7 @@ function estAdmin(connection, infos, res) { //infos = [valide,pseudo,mdp];
         res.cookie("uti", {pseudo: infos[1], mdp: infos[2]}, { maxAge: 900000, signed: true, httpOnly: true});
         getAdminTemp(connection, res);
       } else {
-        res.render('pages/connexion', {message_alert: "-Aucun compte admin associé à ce pseudo et ce mot de passe.</br>"});
+        res.render('pages/connexion', {message_info: "Aucun compte admin associé à ce pseudo et ce mot de passe.</br>"});
       }
     }
   });
@@ -151,8 +146,7 @@ function insereAdminTemp(connection, tabReq, res) { //tabReq = [prenom,nom,pseud
   connection.query("SELECT * FROM Admin WHERE pseudo=?;", [tabReq[2]], function(error, rows) {
     if(error) {
       console.log("Erreur insertion administrateur temporaire : "+erreur);
-      var message = "-<strong>Erreur lors de la réservation</strong : "+erreur.message+".</br>";
-      res.render('pages/inscription', {message_alert: message});
+      res.render('pages/inscription', {message_warning: err.message});
       throw error;
     } else if(rows.length==0) { // pseudo non prsent dans Admin
 
@@ -160,8 +154,7 @@ function insereAdminTemp(connection, tabReq, res) { //tabReq = [prenom,nom,pseud
       connection.query("SELECT * FROM Admin_temp WHERE pseudo=?;", [tabReq[2]], function(err, results) {
         if(err) {
           console.log("Erreur insertion administrateur temporaire : "+erreur);
-          var message = "-<strong>Erreur lors de la réservation</strong : "+erreur.message+".</br>";
-          res.render('pages/inscription', {message_alert: message});
+          res.render('pages/inscription', {message_warning: err.message});
           throw err;
         } else if(results.length==0) { // pseudo non présents dans Admin_temp;
           //On insere
@@ -170,18 +163,17 @@ function insereAdminTemp(connection, tabReq, res) { //tabReq = [prenom,nom,pseud
           connection.query(req, function(erreur, lignes) {
             if(erreur) {
               console.log("Erreur insertion administrateur temporaire : "+erreur);
-              var message = "-<strong>Erreur lors de la réservation</strong : "+erreur.message+".</br>";
-              res.render('pages/inscription', {message_alert: message});
+              res.render('pages/inscription', {message_warning: err.message});
               throw erreur;
             } else {
               console.log("Insertion d'administrateur temporaire réussi.");
-              res.render('pages/inscription-complete');
+              res.render('pages/inscription', {message_success: "<strong>Inscription réussie.<br/>ATTENTION :</strong>La validation par un compte administrateur est <strong>obligatoire</strong> pour bénéficier des privilèges administrateur."});
             }
           });
 
         } else { // pseudo déjà existant
-          var message = "-Le pseudo choisit existe déjà, veuillez en choisir un autre.</br>";
-          res.render('pages/inscription', {message_alert: message});
+          var message = "Le pseudo choisit existe déjà, veuillez en choisir un autre.</br>";
+          res.render('pages/inscription', {message_info: message});
         }
       });
 
@@ -197,25 +189,23 @@ function ajoutPlat(connection, tabReq, res) {// tabReq = [libzllé,descr,urlIm,c
   connection.query("SELECT * FROM Plat WHERE libelle=?;", [tabReq[0]], function(err, results) {
     if(err) {
       console.log("Erreur insertion du plat : "+err);
-      var msg = "<strong>Erreur lors de l'insertion du plat</strong> :"+err.message;
-      res.render('pages/administration', {message_alert: msg});
+      res.render('pages/administration-complete-task', {message_alert: err.message});
       throw err;
     } else if(results.length==0) {//Aucun plat du meme nom on insere
       var req = "INSERT INTO Plat VALUES(null,"+connection.escape(tabReq[0])+","+connection.escape(tabReq[1])+","+connection.escape(tabReq[2])+","+connection.escape(tabReq[3])+","+tabReq[4]+");";
       connection.query(req, function(error, rows) {
         if(error) {
           console.log("Erreur insertion du plat : "+error);
-          var msg = "<strong>Erreur lors de l'insertion du plat</strong> :"+error.message;
-          res.render('pages/administration', {message_alert: msg});
+          res.render('pages/administration-complete-task', {message_alert: error.message});
           throw error;
         } else {//Insertion réussie
           console.log("Insertion d'un nouveau plat réussie.");
-          res.render('pages/administration', {message_conf: "Le plat a bien été ajouté ! Il apparaitra dorénavant sur la page <em>Spécialités</em du site."});
+          res.render('pages/administration-complete-task', {message_success: "Le plat a bien été ajouté ! Il apparaitra dorénavant sur la page <em>Spécialités</em du site."});
         }
       });
     } else {//Plat déjà existant
       console.log("Erreur insertion du plat : le plat existe déjà.");
-      res.render('pages/administration', {message_alert: "Le plat existe déjà ! Veuillez choisir un autre nom ou supprimer le plat obsolète du site"});
+      res.render('pages/administration-complete-task', {message_info: "Le plat existe déjà ! Veuillez choisir un autre nom ou supprimer le plat obsolète du site"});
     }
   });
 };
@@ -223,73 +213,95 @@ function ajoutPlat(connection, tabReq, res) {// tabReq = [libzllé,descr,urlIm,c
 function getSpecialites(connection, res) {
   connection.query("SELECT * FROM Plat;", function(error, rows) {
     if(error) {
-      res.render('pages/specialites', {message_inf: "<strong>Erreur lors de la récupération des spécialités</strong> : "+error.message});
+      res.render('pages/specialites', {message_warning: "error.message"});
       //throw error;
     } else if(rows.length != 0){
       tabJson = JSON.stringify(rows);
       res.render('pages/specialites', {tabJson: tabJson});
     } else {//Rien a afficher
-      res.render('pages/specialites', {message_inf: "Auncun plat à afficher..."});
+      res.render('pages/specialites', {message_info: "Auncun plat à afficher..."});
     }
   });
 };
 
-function insereAdmin(connection, pseudo, res) {//pseudo de l'admin_temp
+function supprimeAdminTemp(connection, pseudo, res) {//pseudo de l'admin_temp
   connection.query("SELECT * FROM Admin_temp WHERE pseudo=?", pseudo, function(err, rows) {
     if(err) {
-      console.log("Erreur insertion de l'admin :"+err);
-      res.redirect('/administrer'); //render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
+      console.log("Erreur suppression de l'admin temporaire:"+err);
+      res.render('pages/administration-complete-task', {message_warning: err.message}); //render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
       throw err;
     } else if(rows.length!=0) {//L'admintemp correspondant au pseudo existe bien
       connection.query("DELETE FROM Admin_temp WHERE pseudo='"+pseudo+"';", function(error, results) {
         if(error) {
           console.log("Erreur suppression de l'admin temporaire :"+error);
-          res.redirect('/administrer');//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
+          res.render('pages/administration-complete-task', {message_warning: error.message});//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
           throw error;
         } else { //Admin temporaire effacé
           console.log("suppression de l'admin temporaire réussie.");
-          res.redirect('/administrer');
+          res.render('pages/administration-complete-task', {message_success: "L'admin temporaire a bien été supprimé."});
         }
       });
     } else {//mauvais pseudo
-      res.redirect('administrer');//render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
+      res.render('pages/administration-complete-task', {message_info: "Le pseudo de l'admin temporaire à supprimer n'existe pas."});//render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
     }
   });
 };
 
-function supprimeAdminTemp(connection, pseudo, res) {
+function insereAdmin(connection, pseudo, res) {
   connection.query("SELECT * FROM Admin_temp WHERE pseudo=?", pseudo, function(err, rows) {
     if(err) {
-      console.log("Erreur suppression de l'admin temporaire :"+err);
-      res.redirect('/administrer'); //render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
+      console.log("Erreur insertion de l'admin :"+err);
+      res.render('pages/administration-complete-task', {message_warning: err.message}); //render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+err.message});
       throw err;
     } else if(rows.length!=0) {//L'admintemp correspondant au pseudo existe bien
       var req = "INSERT INTO Admin VALUES(null,?,?,?,?,?);";
       connection.query(req, [rows[0].pseudo,rows[0].mdp,rows[0].prenom,rows[0].nom,rows[0].email], function(error, results) {
         if(error) {
-          console.log("Erreur suppression de l'admin temporaire :"+error);
-          res.redirect('/administrer');//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
+          console.log("Erreur insertion de l'admin : "+error);
+          res.render('pages/administration-complete-task', {message_warning: error.message});//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+error.message});
           throw error;
         } else {
-          //On efface l'admin temporaire
+          //Insertion Admin réussie on efface l'admin temporaire
           connection.query("DELETE FROM Admin_temp WHERE pseudo=?", rows[0].pseudo, function(er, resu) {
             if(er) {
-              console.log("Erreur suppression de l'admin temporaire :"+er);
-              res.redirect('/administrer');//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+er.message});
+              console.log("Erreur insertion de l'admin :"+er);
+              res.render('pages/administration-complete-task', {message_warning: er.message});//render('pages/administration', {message_alert: "<strong>Erreur lors de l'ajout de l'admin</strong> : "+er.message});
               throw er;
             } else {
-              console.log("Admin temporaire supprimé avec succès.");
-              res.redirect('/administrer');//render('pages/administration', {message_conf: "Administrateur ajouté avec succès.<br/>."});
+              console.log("Insertion admin effectuée avec succès.");
+              res.render('pages/administration-complete-task',{message_success: "Admin inséré avec succès."});//render('pages/administration', {message_conf: "Administrateur ajouté avec succès.<br/>."});
             }
           });
         }
       });
     } else {//mauvais pseudo
-      res.redirect('administrer');//render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
+      res.render('pages/administration-complete-task',{message_info: "Le pseudo ne correspond pas à un admin temporaire existant."});//render('pages/administration', {message_alert: "Le pseudo de l'url ne correspond à aucun admin temporaire.<br/>"});
     }
   });
 };
 
+function supprimePlat(connection, idPlat, res) {
+  connection.query("SELECT * FROM Plat WHERE id=?", idPlat, function(err, rows) {
+    if(err) {
+      console.log("Erreur suppression du plat :"+err);
+      res.render('pages/administration-complete-task', {message_warning: err.message});
+      throw err;
+    } else if(rows.length!=0) {//Le plat correspondant a l'id existe bien
+      connection.query("DELETE FROM Plat WHERE id='"+idPlat+"';", function(error, results) {
+        if(error) {
+          console.log("Erreur suppression du plat :"+error);
+          res.render('pages/administration-complete-task', {message_warning: err.message});
+          throw error;
+        } else { //Admin temporaire effacé
+          console.log("suppression du plat réussie.");
+          res.render('pages/administration-complete-task', {message_success: "Suppression du plat de l'affichage du site confirmée."});
+        }
+      });
+    } else {//mauvais pseudo
+      res.render('pages/administration-complete-task', {message_info: "Aucun plat correspondant n'a été trouvé"});
+    }
+  });
+};
 
 exports.insereResa = insereResa;
 exports.estAdmin = estAdmin;
@@ -298,3 +310,4 @@ exports.ajoutPlat = ajoutPlat;
 exports.getSpecialites = getSpecialites;
 exports.insereAdmin = insereAdmin;
 exports.supprimeAdminTemp = supprimeAdminTemp;
+exports.supprimePlat = supprimePlat;

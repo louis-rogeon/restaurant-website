@@ -46,7 +46,7 @@ function formulaireResa(req, res) {
     var tabReq = [nom,mail,tel,nbrInvit,date,heure];
     return tabReq;
   } else {
-    res.render('pages/reservation', {message_alert: message});
+    res.render('pages/reservation', {message_info: message});
     var tabReq = null;
     return tabReq;
   }
@@ -70,7 +70,7 @@ function formulaireConn(req, res) {
 
   //Si invalide on renvoie avec message contenant les erreurs
   if(!valide) {
-    res.render('pages/connexion', {message_alert: message});
+    res.render('pages/connexion', {message_info: message});
   }
   //Si undefined on renvoie la page sans rien (1er accès, var pseudo et mdp undefined)
   if((mdp == undefined) || (pseudo == undefined)) {
@@ -120,7 +120,7 @@ function formulaireInscr(req, res) {
   }
 
   if(!valide) {
-    res.render('pages/inscription', { message_alert: message});
+    res.render('pages/inscription', { message_info: message});
     return null;
   } else {
     var tabReq = [prenom,nom,pseudo,mail,mdp];
@@ -148,7 +148,7 @@ function formulaireAjout(req, res) {
   }
 
   if(!valide) {
-    res.render('pages/administration', { message_alert: message});
+    res.render('pages/administration', { message_info: message});
     return null;
   } else {
     var tabReq = [nom,descr,urlIm,comm,prix];
