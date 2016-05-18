@@ -37,7 +37,7 @@ var db_config = {
   host: hostBD,
   user: userBD,
   password: passwdBD,
-  database: nameB
+  database: nameBD
 };
 //fonction gérant les erreurs de connection et redemande une connexion si celle-ci est perdue
 function handleDisconnect() {
