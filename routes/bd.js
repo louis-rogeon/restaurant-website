@@ -79,17 +79,32 @@ function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit
   connection.commit();
 };
 
+function getPlats(connection, res, adminsTemp, reservations) {//adminsTemps contient demandes de validation admin, reservations a les reservations en cours
+    connection.query("SELECT * FROM Plat;", function(error, rows) {
+      if(error) {
+        res.render('pages/administration', {resJson: adminsTemp, resas: reservations});
+        throw error;
+      } else if(rows.length != 0) {//plats a afficher
+        var plats = JSON.stringify(rows);
+        res.render('pages/administration', {resJson: adminsTemp, resas: reservations, plats: plats});
+      } else {
+        res.render('pages/administration', {resJson: adminsTemp, resas: reservations});
+      }
+    })
+}
+
 function getReservations(connection, res, adminsTemp) {//adminsTemps objet json contenant les demandes d'admin si existantes, sinon null
   connection.query("SELECT nom, email, telephone, nbr_Invites, DAYOFMONTH(date_Resa) as jour, MONTH(date_Resa) as mois, YEAR(date_Resa) as annee, TIME(date_Resa) as heure FROM Reservation NATURAL JOIN Client ORDER BY annee, mois, jour;", function(error, rows) {
     if(error) {
-      res.render('pages/administration', {resJson: adminsTemp});
+      var reservations = null;
+      getPlats(connection, res, adminsTemp, reservations);
       throw error;
     } else if(rows.length!=0) {//Résas à afficher
       var reservations = JSON.stringify(rows);
-      console.log(reservations);
-      res.render('pages/administration', {resJson: adminsTemp, resas: reservations});
+      getPlats(connection, res, adminsTemp, reservations);
     } else {
-      res.render('pages/administration', {resJson: adminsTemp});
+      var reservations = null;
+      getPlats(connection, res, adminsTemp, reservations);
     }
   });
 };

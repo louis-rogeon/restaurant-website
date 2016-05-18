@@ -112,6 +112,39 @@
       <div class="row admin" id="plats">
         <h2>Plats à l'affiche</h2>
 
+        <% if(typeof plats != 'undefined') { %>
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-condensed">
+          <caption>
+            <h4>Plats actuellement à l'affiche sur le site</h4>
+          </caption>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Commentaire du chef</th>
+                <th>Prix</th>
+                <th>Supprimer</th>
+              </tr>
+            </thead>
+
+            <tbody>
+            <%var tabPlats = eval('(' + plats + ')');
+            var i;
+            if(tabPlats != null) {
+            for(i=0;i<tabPlats.length;i++) {%>
+              <tr><td><%=tabPlats[i].libelle%></td>
+              <td><%=tabPlats[i].description%></td>
+              <td><%=tabPlats[i].comm_chef%></td>
+              <td><%=tabPlats[i].prix%></td>
+              <td><a href="/supprimer-plat-<%=tabPlats[i].id%>">supprimer</a></td></tr>
+            <%}
+          }%>
+          </tbody>
+        </table>
+        </div>
+        <%}%>
+
         <div>
           <form class="col-lg-8" method="post" action="/ajouter-plat">
             <legend>Ajouter un plat à la liste de vos spécialités</legend>
