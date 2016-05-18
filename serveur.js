@@ -27,11 +27,11 @@ connexion bd
 var mysql = require('mysql');
 //On recupere les logs de la BD sur le serveur d'heroku
 var urlBD = process.env.DATABASE_URL;
-var hostBD = url.parse(bd).hostname;
-var logsTab = (url.parse(bd).auth).split(':');
+var hostBD = url.parse(urlBD).hostname;
+var logsTab = (url.parse(urlBD).auth).split(':');
 var userBD = logsTab[0];
 var passwdBD = logsTab[1];
-var nameBD = (url.parse(bd).pathname).substring(1);
+var nameBD = (url.parse(urlBD).pathname).substring(1);
 //Set up BD
 var db_config = {
   host: hostBD,//'us-cdbr-iron-east-04.cleardb.net',
