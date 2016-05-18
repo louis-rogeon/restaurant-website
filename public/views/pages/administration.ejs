@@ -74,7 +74,8 @@
         <h2>Réservations</h2>
         <% if(typeof resas != 'undefined') { %>
 <!--resas = nom, email, telephone, nbr_Invites, jour, mois, annee, heure-->
-        <table class="table table-bordered table-striped">
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table table-condensed">
           <caption>
             <h4>Réservations en ligne</h4>
           </caption>
@@ -101,6 +102,7 @@
             <%}%>
           </tbody>
         </table>
+        </div>
         <%}%>
       </div>
 
