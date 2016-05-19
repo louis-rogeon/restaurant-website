@@ -1,76 +1,96 @@
 
 function insereResa(connection, tabReq, res) { //tabReq = [nom,mail,tel,nbrInvit,date,heure];
-  /* -----------
-  INSERT Client
-  ----------- */
-  //On verifie que le client n'existe pas déjà dans la bd
-  connection.query("SELECT * FROM Client WHERE nom=? AND email=? AND telephone=?;", [tabReq[0],tabReq[1],tabReq[2]], function(error, rows) {
-    if(error) {
-      console.log("Erreur lors de l'insertion du client.");
-      res.render('pages/reservation', {message_warning: error.message});
-      throw error;
-    }
-    //Aucun client similaire retrouvé
-    else if(rows.length == 0){
-      var req = "INSERT INTO Client VALUES (null,'"+tabReq[0]+"','"+tabReq[1]+"','"+tabReq[2]+"');";
-
-
-      connection.query(req, function(error1, results) {
-        if(error1==null) {
-          console.log("Insertion du client réussie.");
-          /* ---------------
-          INSERT Reservation
-          ---------------- */
-          var idClient = results.insertId;
-          var datetime = tabReq[4]+" "+tabReq[5];
-          var req = "INSERT INTO Reservation VALUES (null,"+idClient+","+tabReq[3]+",'"+datetime+"');";
-
-          connection.query(req, function(error2, rows) {
-            if(error2==null) {
-              console.log("Insertion de la réservation réussie.");
-              res.render('pages/reservation', {message_success: "<strong>Votre réservation a bien été prise en compte.</strong><br/>Un email de confirmation sera envoyé, dans le cas contraire un appel vous sera passé de l'équipe du restaurant."});
-            } else {
-              console.log("Erreur insertion réservation : "+error2);
-              res.render('pages/reservation', {message_warning: error2.message});
-              throw error2;
-            }
-          });
-
-        } else {
-          console.log("Erreur insertion client : "+error1);
-          res.render('pages/reservation', {message_warning: error1.message});
-          throw error1;
-        }
-      });
-
-
-      //Le client existe deja
-    } else {
-      connection.query("SELECT id_Client FROM Client WHERE nom=? AND email=? AND telephone=?;",[tabReq[0],tabReq[1],tabReq[2]], function(error, results) {
+  /* -------------------------------
+  VERIFICATION DE PLACE POUR LA RESA
+  -------------------------------- */
+  var nbr_places_max = 30;
+  var req = "SELECT count(*) as nbr_places_res FROM Reservation WHERE DAYOFMONTH(date_Resa)=? AND MONTH(date_Resa)=? AND YEAR(date_Resa)=? AND TIME(date_Resa)<=? AND TIME(date_Resa)>=?;";
+  var date = tabReq[4].split('/');
+  var heure = tabReq[5].split(':');
+  var heureSup = (+heure[0]+1)+':'+heure[1]; var heureInf = (+heure[0]-1)+':'+heure[1];
+  var tab = [date[2], date[1], date[0], heureSup, heureInf];
+  connection.query(req, tab,function(erreur, resultats) {
+    if(erreur) {//Erreur verif places
+      console.log("Erreur lors de l'insertion de la réservation.");
+      res.render('pages/reservation', {message_warning: erreur.message});
+      throw erreur;
+    } else if(resultats[0].nbr_places_res+tabReq[3]<=nbr_places_max) { // Il reste assez de place pour faire la résa
+      /* -----------
+      INSERT Client
+      ----------- */
+      //On verifie que le client n'existe pas déjà dans la bd
+      connection.query("SELECT * FROM Client WHERE nom=? AND email=? AND telephone=?;", [tabReq[0],tabReq[1],tabReq[2]], function(error, rows) {
         if(error) {
-          console.log("Erreur insertion réservation : "+error);
+          console.log("Erreur lors de l'insertion du client.");
           res.render('pages/reservation', {message_warning: error.message});
           throw error;
-        } else {
-          var idClient = results[0].id_Client;
-          var datetime = tabReq[4]+" "+tabReq[5];
-          var req = "INSERT INTO Reservation VALUES (null,"+idClient+","+tabReq[3]+",'"+datetime+"');";
-
-          connection.query(req, function(error2, rows) {
-            if(error2==null) {
-              console.log("Insertion de la réservation réussie.");
-              res.render('pages/reservation', {message_success: "<strong>Votre réservation a bien été prise en compte.</strong><br/>Un email de confirmation sera envoyé, dans le cas contraire un appel vous sera passé de l'équipe du restaurant."});
-            } else {
-              console.log("Erreur insertion réservation : "+error2);
-              res.render('pages/reservation', {message_warning: error2.message});
-              throw error2;
-            }
-          });
-
         }
-      });
-    }
+        //Aucun client similaire retrouvé
+        else if(rows.length == 0){
+          req = "INSERT INTO Client VALUES (null,'"+tabReq[0]+"','"+tabReq[1]+"','"+tabReq[2]+"');";
+
+
+          connection.query(req, function(error1, results) {
+            if(error1==null) {
+              console.log("Insertion du client réussie.");
+              /* ---------------
+              INSERT Reservation
+            ---------------- */
+            var idClient = results.insertId;
+            var datetime = tabReq[4]+" "+tabReq[5];
+            req = "INSERT INTO Reservation VALUES (null,"+idClient+","+tabReq[3]+",'"+datetime+"');";
+
+            connection.query(req, function(error2, rows) {
+              if(error2==null) {
+                console.log("Insertion de la réservation réussie.");
+                res.render('pages/reservation', {message_success: "<strong>Votre réservation a bien été prise en compte.</strong><br/>Un email de confirmation sera envoyé, dans le cas contraire un appel vous sera passé de l'équipe du restaurant."});
+              } else {
+                console.log("Erreur insertion réservation : "+error2);
+                res.render('pages/reservation', {message_warning: error2.message});
+                throw error2;
+              }
+            });
+
+          } else {
+            console.log("Erreur insertion client : "+error1);
+            res.render('pages/reservation', {message_warning: error1.message});
+            throw error1;
+          }
+        });
+
+
+        //Le client existe deja
+      } else {
+        connection.query("SELECT id_Client FROM Client WHERE nom=? AND email=? AND telephone=?;",[tabReq[0],tabReq[1],tabReq[2]], function(errorbis, results) {
+          if(errorbis) {
+            console.log("Erreur insertion réservation : "+errorbis);
+            res.render('pages/reservation', {message_warning: errorbis.message});
+            throw error;
+          } else {
+            var idClient = results[0].id_Client;
+            var datetime = tabReq[4]+" "+tabReq[5];
+            var req = "INSERT INTO Reservation VALUES (null,"+idClient+","+tabReq[3]+",'"+datetime+"');";
+
+            connection.query(req, function(error2, rows) {
+              if(error2==null) {
+                console.log("Insertion de la réservation réussie.");
+                res.render('pages/reservation', {message_success: "<strong>Votre réservation a bien été prise en compte.</strong><br/>Un email de confirmation sera envoyé, dans le cas contraire un appel vous sera passé de l'équipe du restaurant."});
+              } else {
+                console.log("Erreur insertion réservation : "+error2);
+                res.render('pages/reservation', {message_warning: error2.message});
+                throw error2;
+              }
+            });
+
+          }
+        });
+      }
+    });
+  } else { //Pas de places dispo pour cet horaire
+      res.render('pages/reservation', {message_info: "Il n'y a plus de places disponibles pour cet horaire, veuillez en choisir un autre."});
+  }
   });
+
 };
 
 function getPlats(connection, res, adminsTemp, reservations) {//adminsTemps contient demandes de validation admin, reservations a les reservations en cours
