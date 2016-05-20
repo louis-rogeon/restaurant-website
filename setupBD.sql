@@ -51,16 +51,18 @@ CREATE TABLE IF NOT EXISTS Reservation (
 )
 ENGINE=INNODB;
 
+
 CREATE TRIGGER after_insert_admin AFTER INSERT
 ON Admin FOR EACH ROW
 DELETE FROM Admin_temp WHERE pseudo=NEW.pseudo;
 
+
 CREATE TRIGGER before_insert_reservation AFTER INSERT
 ON Reservation FOR EACH ROW
 BEGIN
-  SELECT count(*) as nbr_places_res FROM Reservation WHERE DAYOFMONTH(date_Resa)=DAYOFMONTH(NEW.date_Resa) AND MONTH(date_Resa)=MONTH(NEW.date_Resa) AND YEAR(date_Resa)=YEAR(NEW.date_Resa) AND TIME(date_Resa)<=TIME(NEW.date_Resa) AND TIME(date_Resa)>=TIME(NEW.date_Resa);
-  SET nbr_places_max = 2;
-  IF (nbr_places_res+NEW.nbr_Invites > nbr_places_max ) THEN
-    DELETE FROM Reservation WHERE id_Resa = NEW.id_Resa;
-  ENDIF
+SELECT count(*) as nbr_places_res FROM Reservation WHERE DATEDIFF(NEW.date_Resa,date_Resa)=0 AND TIMESTAMPDIFF(MINUTE,NEW.date_Resa,date_Resa)<=60 AND TIMESTAMPDIFF(MINUTE,NEW.date_Resa,date_Resa)>=-60;
+SET nbr_places_max = 30;
+IF (nbr_places_res+NEW.nbr_Invites > nbr_places_max ) THEN
+  DELETE FROM Reservation WHERE id_Resa = NEW.id_Resa;
+ENDIF;
 END;
