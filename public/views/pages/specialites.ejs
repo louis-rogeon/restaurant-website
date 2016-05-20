@@ -26,12 +26,14 @@
           <div class="container">
             <div class="row panneaux"><%
               for(i=0;i<tab.length;i++) {%>
-                <div class="panel panel-default col-lg-4 col-md-4 col-sm-6">
+                <div class="col-md-4 col-sm-6">
+                <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title"><%=tab[i].libelle%></h3>
                   </div>
                   <div class="panel-body"><%=tab[i].description%><br/><em><strong>Le mot du chef</strong> : &quot<%=tab[i].comm_chef%>&quot</em></div>
                   <div class="panel-footer"><%=tab[i].prix%> &#128</div>
+                </div>
                 </div>
               <%}%>
             </div>

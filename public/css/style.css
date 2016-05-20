@@ -15,10 +15,7 @@ body > .container {
   background-color: #ddd;
   min-height: 100%;
   min-height: 400px;
-}/*
-.page-header {
-  padding-left: 60px;
-}*/
+}
 .reservation {
   margin: 60px 0px 60px 0px;
 /*  padding: 10px 30px 60px 30px;*/
@@ -41,15 +38,9 @@ footer {
   height: 60px;
   background-color: #f1f1f1;
 }
-/*
-.alert {
-  height: auto;
-  background-color: red;
-  color: white;
-}*/
 
 .conf {
-  width: auto;;
+  width: auto;
   background-color: green;
   color: white;
 }
@@ -61,7 +52,9 @@ footer {
 .menu {
   margin: 60px 0px 60px 0px;
 }
+#spe:target ~ nav .container #navbar #header_menu li:nth-child(2) { background-color: #ddd; }
 
+/*nav .container #navbar #header_menu li:nth-child(2) { background-color: #ddd; }*/
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
@@ -83,12 +76,5 @@ code {
   font-size: 80%;
 }
 /* -----------------------
-Affichage col
-------------------------
-[class*="col-"] {
-  background-color: lightgreen;
-  border: 2px solid black;
-  border-radius: 6px;
-  line-height: 40px;
-  text-align: center;
-}*/
+SURLIGNAGE LIENS MENU
+----------------------- */
