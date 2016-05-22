@@ -128,21 +128,24 @@ function formulaireInscr(req, res) {
   }
 };
 
+
+
 function formulaireAjout(req, res) {
   var nom = req.body.nom;
   var descr = req.body.descr;
-  var urlIm = req.body.urlIm;
+  var urlIm = null;
   var prix = req.body.prix;
   var comm = req.body.comm;
+
 
   var valide = true,
       message = "";
 
-  if(nom=="") {
+  if(nom=="" || nom==undefined) {
     valide = false;
     message += "-Veuillez indiquer le nom du plat.</br>";
   }
-  if(prix==0) {
+  if(prix==0 || prix==undefined) {
     valide = false;
     message += "-Veuillez choisir un prix.</br>";
   }

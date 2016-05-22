@@ -12,9 +12,11 @@ var fs = require('fs'),
 var url = require("url");
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
+/*
+app.use(express.methodOverride());
+app.use(express.bodyParser({keepExtensions:true,uploadDir:path.join(__dirname,'/files')}));*/
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(cookieParser("i ifàç -_784 119"));
-
 //Def chemin fichiers statiques
 app.use(express.static('public'));
 app.use(express.static('public/views'));
@@ -66,6 +68,12 @@ handleDisconnect();
 /* ------------------
 Routage
 ------------------ */
+app.get('/deconnexion', function(req, res) {
+  if(req.signedCookies.uti != undefined) {
+    res.cookie("uti", {pseudo: "", mdp: ""}, { maxAge: 900000, signed: true, httpOnly: true});
+  }
+  res.redirect('/');
+});
 app.get('/', function(req, res) {
   res.render('pages/index');
 });
@@ -82,7 +90,7 @@ app.get('/inscription', function(req, res) {
   res.render('pages/inscription.ejs');
 });
 app.get('/administrer', function(req, res) {
-  if(req.signedCookies.uti != undefined) {
+  if(req.signedCookies.uti != undefined && req.signedCookies.uti['pseudo']!= "") {
     var infos = [,req.signedCookies.uti['pseudo'], req.signedCookies.uti['mdp']];
     bd.estAdmin(connection, infos, res);
   } else {
