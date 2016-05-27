@@ -4,6 +4,14 @@ INITIALISATION BALISES
 html {
   position: relative;
   min-height: 100%;
+  margin:0;
+  padding:0;
+  background: url(./public/pic/background.jpg) no-repeat center fixed;
+  -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+  background-size: cover;  /* version standardisée */
+}
+a {
+  color: #CF9715;
 }
 body {
   /* Margin bottom by footer height */
@@ -25,12 +33,17 @@ body > .container {
 }
 .row {
   padding: 10px 30px 10px 30px;
-}
+}/*
 .panneaux {
   padding: 20px 60px 40px 0px;
+}*/
+.affPlats {
+  padding: 0px;
+  margin: 0px;
 }
-
-
+footer > div > p {
+  color: #DE9E09;
+}
 footer {
   position: absolute;
   bottom: 0;
@@ -38,7 +51,9 @@ footer {
   height: 60px;
   background-color: #f1f1f1;
 }
-
+td > a {
+  color: black;
+}
 .conf {
   width: auto;
   background-color: green;
@@ -52,6 +67,7 @@ footer {
 .menu {
   margin: 60px 0px 60px 0px;
 }
+/*TENTATIVE DE MODIFICATION DE MENU SELECTIONNER */
 #spe:target ~ nav .container #navbar #header_menu li:nth-child(2) { background-color: #ddd; }
 
 /*nav .container #navbar #header_menu li:nth-child(2) { background-color: #ddd; }*/
